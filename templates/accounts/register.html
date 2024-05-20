@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+{% block start %}
+    <form  method="POST">
+        {% csrf_token %}
+    <div class="d-flex flex-column bd-highlight mb-3 login-form">
+        <div class="p-2 bd-highlight">
+            <h4>Register</h4>
+        </div>
+        <div class="p-2 bd-highlight">
+            <input type="text" name="first_name" placeholder="First Name" id="username" required>
+        </div>
+        <div class="p-2 bd-highlight">
+            <input type="text" name="last_name" placeholder="Last Name" id="username" required>
+        </div>
+        <div class="p-2 bd-highlight">
+            <input type="text" name="email" placeholder="Email/Username" id="username" required>
+        </div>
+        <div class="p-2 bd-highlight">
+            <input type="password" name="password" placeholder="Password" id="password" required>
+        </div>
+        <div class="p-2 bd-highlight">
+            <input type="password" name="confpassword" placeholder="Confirm Password" id="confpassword" required>
+        </div>
+        <div class="p-2 bd-highlight login-component">
+            <input type="checkbox" onclick="showPassword()">&nbsp;Show Password
+        </div>
+        <div class="p-2 bd-highlight">
+            <button type="submit" id="register">Register</button>
+        </div>
+        <div class="p-2 bd-highlight">
+            {% include "base/alert.html" %}
+        </div>
+    </div>
+    </form>
+    <script>
+        function showPassword() {
+            var x = document.getElementById("password");
+            var y = document.getElementById("confpassword");
+            if (x.type === "password" || y.type ==="password") {
+              x.type = "text";
+              y.type = "text";
+            } else {
+              x.type = "password";
+              y.type = "password";
+            }
+          }
+
+    </script>
+
+{% endblock %}

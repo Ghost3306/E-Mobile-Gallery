@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% block start %}
+    <form  method="POST">
+        {% csrf_token %}
+    <div class="d-flex flex-column bd-highlight mb-3 login-form">
+        <div class="p-2 bd-highlight">
+            <h4>Login</h4>
+        </div>
+        <div class="p-2 bd-highlight login-component">
+            <input type="text" name="username" placeholder="Username" id="username" required>
+        </div>
+        <div class="p-2 bd-highlight login-component">
+            <input type="password" name="password" placeholder="Password" id="password" required>
+            
+        </div>
+        <div class="p-2 bd-highlight login-component">
+            <input type="checkbox" onclick="showPassword()">&nbsp;Show Password
+        </div>
+        <div class="p-2 bd-highlight login-component-btn">
+            <button type="submit" id="login">Login</button>
+        </div>
+        <div class="p-2 bd-highlight login-component-msg">
+            {% include "base/alert.html" %}
+        </div>
+    </div>
+    </form>
+
+    <script>
+        function showPassword() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+              x.type = "text";
+            } else {
+              x.type = "password";
+            }
+          }
+
+    </script>
+{% endblock %}
