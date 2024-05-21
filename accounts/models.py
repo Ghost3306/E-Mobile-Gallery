@@ -11,6 +11,8 @@ class Profile(BaseModel):
     is_verified = models.BooleanField(default=False)
     email_token = models.CharField(max_length=100)
 
+    def __str__(self) ->str:
+        return self.user.first_name+' '+self.user.last_name
 
 @receiver(post_save, sender=User)
 
