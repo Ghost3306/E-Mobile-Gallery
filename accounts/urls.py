@@ -6,8 +6,10 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('',views.home_index,name='homepage'),
-    path('login/',views.login,name='user_login'),
-    path('register-user/',views.register,name='user_register')
+    path('login/',views.login_user,name='user_login'),
+    path('register-user/',views.register,name='user_register'),
+    path('activate/<email_token>/',views.activate_email,name='activate'),
+    path('logout/',views.logout_user,name='logoutuser')
   
 ]
 if settings.DEBUG:
