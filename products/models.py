@@ -141,7 +141,7 @@ class PhoneList(BaseModel):
     category = models.ForeignKey(Category,on_delete=models.DO_NOTHING,related_name='category')
     cellular_net = models.ManyToManyField(CellularNetwork)
     os_details = models.ManyToManyField(OSDetails,blank=True)
-    colors = models.ManyToManyField(Color)
+    # colors = models.ManyToManyField(Color)
     price = models.IntegerField()
     slug = models.SlugField(unique=True,null=True,blank=True)
     ram_rom = models.ManyToManyField(RamRom) 
@@ -167,4 +167,5 @@ class PhoneList(BaseModel):
 
 class PhoneImages(BaseModel):
     phone = models.ForeignKey(PhoneList,on_delete=models.CASCADE,related_name='phone_images')
+    color = models.ManyToManyField(Color)
     image = models.ImageField(upload_to='images')
