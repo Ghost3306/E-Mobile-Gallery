@@ -4,10 +4,14 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from accounts.models import Profile
+from products.models import PhoneList
 
 def home_index(request):
-   
-    return render(request,'home/homepage.html')
+    phones = PhoneList.objects.all()
+    # images = phones.phone_images.all()
+    # for x in images:
+    #     print(x.image)
+    return render(request,'home/homepage.html',{'phones':phones})
 
 def login_user(request):
     if request.method == 'POST':

@@ -167,5 +167,5 @@ class PhoneList(BaseModel):
 
 class PhoneImages(BaseModel):
     phone = models.ForeignKey(PhoneList,on_delete=models.CASCADE,related_name='phone_images')
-    color = models.ManyToManyField(Color)
+    
     image = models.ImageField(upload_to='images')

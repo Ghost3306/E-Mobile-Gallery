@@ -1,22 +1,28 @@
+{% comment %} {% extends "base/base.html" %} {% endcomment %}
 
 {% block start %}
     <div class="carousel">
+
+          
         
-       <div class="sm-car">
-            <img src=>
-            <h5>iPhone</h5>
-       </div>
-       <div class="sm-car">
-            <img src="">
-            <h5>iPhone</h5>
-       </div>
-       <div class="sm-car">
-            <img src="">
-            <h5>iPhone</h5>
-       </div>
-       <div class="sm-car">
-            <img src="">
-            <h5>iPhone</h5>
-       </div>
-    </div>    
+          {% for phone in phones %}
+          <div class="sm-car">
+            <img class="imgs" src="/media/{{phone.phone_images.first.image}}" >
+            <a class="anchor" href="/phone/{{phone.slug}}/" >{{phone.phone_name|slice:"43"}}...</a>
+            <p class="price" >Rs.{{phone.price}}</p>
+            </div>
+
+ 
+          {% endfor %}
+
+       
+        
+    </div>
+    
+
+
+   
+   
+
+
 {% endblock %}

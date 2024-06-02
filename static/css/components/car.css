@@ -1,0 +1,21 @@
+.anchor{
+    text-align:center;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.carousel{
+    padding-right: 8px;
+    text-align: center;
+}
+.imgs{
+    width: 190px;
+    height: 150px;
+    object-fit: contain;
+    margin: 10px;
+}
+.price{
+    margin: 5px; 
+    text-align: center;
+    font-weight: 700;
+}
