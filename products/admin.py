@@ -1,14 +1,20 @@
 from django.contrib import admin
 
 # Register your models here.
-from products.models import Category,CellularNetwork,OSDetails,Color,RamRom,Brand,Display,Connectivity,FrontCamera,RearCamera,CameraFeatures,CPUSpecs,BatteryDetails,InTheBox,AdditionalDetails,PhoneImages,PhoneList
+from products.models import Category,CameraDetails,CellularNetwork,OSDetails,RamRom,Brand,Display,Connectivity,CameraFeatures,CPUSpecs,BatteryDetails,InTheBox,PhoneImages,PhoneList
 
 
 class PhoneImagesAdmin(admin.StackedInline):
     model = PhoneImages
 
+class PhoneCameraAdmin(admin.StackedInline):
+    model = CameraDetails
+
 class PhoneAdmin(admin.ModelAdmin):
-    inlines = [PhoneImagesAdmin]
+    inlines = [PhoneImagesAdmin,PhoneCameraAdmin]
+
+
+
 
 @admin.register(Display)
 class DisplayAdmin(admin.ModelAdmin):
@@ -27,9 +33,6 @@ class OSAdmin(admin.ModelAdmin):
     model=OSDetails
 
 
-@admin.register(Color)
-class ColorAdmin(admin.ModelAdmin):
-    model=Color
 
 @admin.register(RamRom)
 class RamRomAdmin(admin.ModelAdmin):
@@ -44,13 +47,7 @@ class BrandAdmin(admin.ModelAdmin):
 class ConnectivityAdmin(admin.ModelAdmin):
     model=Connectivity
 
-@admin.register(FrontCamera)
-class FrontCameraAdmin(admin.ModelAdmin):
-    model=FrontCamera
 
-@admin.register(RearCamera)
-class RearCameraAdmin(admin.ModelAdmin):
-    model=RearCamera
 
 @admin.register(CameraFeatures)
 class CameraFeaturesAdmin(admin.ModelAdmin):
@@ -69,8 +66,6 @@ class BatteryAdmin(admin.ModelAdmin):
 class IntheboxAdmin(admin.ModelAdmin):
     model=InTheBox
 
-@admin.register(AdditionalDetails)
-class AdditionalsAdmin(admin.ModelAdmin):
-    model=AdditionalDetails
+
     
 admin.site.register(PhoneList,PhoneAdmin)
