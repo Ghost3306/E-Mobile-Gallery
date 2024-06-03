@@ -33,9 +33,9 @@ class OSDetails(BaseModel):
 class RamRom(BaseModel):
     ram_size = models.IntegerField()
     rom_size = models.IntegerField()
-
+    price_to_add = models.IntegerField(default=0)
     def __str__(self) ->str:
-        return str(self.ram_size)+'+'+str(self.rom_size)
+        return str(self.ram_size)+'+'+str(self.rom_size) +" + "+str(self.price_to_add)
     
 class Brand(BaseModel):
     brand_name = models.CharField(max_length=50)
@@ -107,6 +107,7 @@ class PhoneList(BaseModel):
     os_details = models.OneToOneField(OSDetails,on_delete=models.DO_NOTHING,null=True,blank=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
     ram_rom = models.ManyToManyField(RamRom) 
+    original_price = models.IntegerField()
     brand = models.ForeignKey(Brand,on_delete=models.DO_NOTHING,related_name='brand')
     display = models.OneToOneField(Display,on_delete=models.DO_NOTHING,null=True)
     connectivity = models.ManyToManyField(Connectivity)
@@ -133,5 +134,5 @@ class CameraDetails(BaseModel):
 class PhoneImages(BaseModel):
     phone = models.ForeignKey(PhoneList,on_delete=models.CASCADE,related_name='phone_images')
     color = models.CharField(max_length=30)
-    price = models.IntegerField()
+    price_to_add = models.IntegerField(default=0)
     image = models.ImageField(upload_to='images')
