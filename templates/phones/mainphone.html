@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+
+{% block start %}
+    <div class="container">
+        <div class="mainimage">
+            <div class="imagecar">
+                
+                <div class="slideshow-container">
+                    {% for image in phoneobj.phone_images.all %}
+                        <div class="mySlides">
+                            <div class="numbertext">1 / 3</div>
+                            <img src="/media/{{image.image}}" style="width:100%">
+                            <div class="text"></div>
+                        </div>
+                    {% endfor %}
+                    
+                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                    <a class="next" onclick="plusSlides(1)">❯</a>
+                    
+                    </div>
+                    <br> 
+                </div>
+
+           
+        </div>
+        <div class="maindetail">
+            <h1>{{phoneobj.phone_name}}</h1>
+            <h5><strong>Sold By {{phoneobj.brand}}</strong></h5>
+            <h4>&#8377; {{phoneobj.original_price}}</h4>
+            <p>About : </p>
+            <p>Display : {{phoneobj.display.display_size}} {{phoneobj.display.display_name}} {{phoneobj.display.resolution_x}} x {{phoneobj.display.resolution_y}}<br>
+            
+            {% if phoneobj.display.pixel_per_inch %}
+                {{phoneobj.display.pixel_per_inch}}
+            {% endif %}
+            {% if phoneobj.display.hz %}
+                Refresh Rate : {{phoneobj.display.hz}}Hz 
+            {% endif %}
+            {% if phoneobj.display.touch_response %}
+                Touch Response : {{phoneobj.display.touch_response}}Hz
+            {% endif %}
+            {% if phoneobj.display.color_depth %}
+                Color Depth : {{phoneobj.display.color_depth}}
+            {% endif %}
+            {% if phoneobj.display.brightness %}
+                Brightness : {{phoneobj.display.brightness}}
+            {% endif %}
+            </p>
+            
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+        
+        function plusSlides(n) {
+          showSlides(slideIndex += n);
+        }
+        
+        function currentSlide(n) {
+          showSlides(slideIndex = n);
+        }
+        
+        function showSlides(n) {
+          let i;
+          let slides = document.getElementsByClassName("mySlides");
+          let dots = document.getElementsByClassName("dot");
+          if (n > slides.length) {slideIndex = 1}    
+          if (n < 1) {slideIndex = slides.length}
+          for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+          }
+          slides[slideIndex-1].style.display = "block";  
+          dots[slideIndex-1].className += " active";
+        }
+    </script>
+{% endblock %}

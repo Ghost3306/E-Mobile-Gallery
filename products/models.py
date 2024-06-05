@@ -50,7 +50,7 @@ class Brand(BaseModel):
         return self.brand_name
     
 class Display(BaseModel):
-    display_name = models.CharField(max_length=20)
+    display_name = models.CharField(max_length=60)
     resolution_x = models.IntegerField()
     resolution_y = models.IntegerField()
     display_size = models.FloatField()

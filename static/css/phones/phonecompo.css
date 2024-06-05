@@ -1,0 +1,113 @@
+.container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 2.5%;
+   
+}
+.mainimage{
+    width: 40%;
+    height: 80vh;
+    border: 1px solid black;
+    display: grid;
+    
+}
+.imagecar{
+    position: absolute;
+    top: 18%;
+    left: 15%;
+    transform: translate(-50% -50%);
+}
+.maindetail{
+    width: 50%;
+    max-height: 80vh;
+    border: 1px solid blue;
+    padding: 40px;
+}
+
+.imagedata{
+    width: 420px;
+    height: 420px;
+    object-fit: contain;
+    position: absolute;
+    place-items: center;
+    border: 1px solid black;
+}
+
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+.slideshow-container {
+  max-width: 420px;
+  position: relative;
+  margin: auto;
+}
+
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: rgb(143, 190, 255);
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  /* user-select: none; */
+}
+
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+
+
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+
+
+
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+} 
+
+.imageselect{
+    width: 30%;
+    position: absolute;
+    bottom: 10%;
+}
