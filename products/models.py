@@ -124,6 +124,11 @@ class PhoneList(BaseModel):
     def __str__(self) ->str:
         return self.phone_name
 
+    def get_price_by_color(self,color):
+        return self.original_price +color
+    
+    def get_price_by_storage(self,price_add):
+        return self.original_price+price_add
 
 
 class CameraDetails(BaseModel):

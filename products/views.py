@@ -6,14 +6,72 @@ def get_product(request,slug):
     
     try:    
         phoneobj = PhoneList.objects.get(slug=slug)
-        c = phoneobj.phone_images
-       
         colors = phoneobj.phone_images.order_by('color').values_list('color', flat=True).distinct()
         context = {
             'phoneobj':phoneobj,
             'colors': colors
-
             }
+        if request.GET.get('color') or request.GET.get('ram'):
+            price = 0
+            if request.GET.get('color'):
+                color = request.GET.get('color')
+                print(color)
+                phoneobj = PhoneList.objects.get(slug=slug)
+                pobj = phoneobj.phone_images.all()
+                price_add = 0
+                for x in pobj:
+                    if x.color==color:
+                        price_add = x.price_to_add
+                        break
+                
+                phoneobj = PhoneList.objects.get(slug=slug)
+                colors = phoneobj.phone_images.order_by('color').values_list('color', flat=True).distinct()
+                context = {
+                'phoneobj':phoneobj,
+                'colors': colors
+                }
+                
+                updated_price = phoneobj.get_price_by_color(price_add)
+                price=updated_price
+                print(f'color {color},updated : {updated_price}')
+                context['selected_color']=color
+                context['updated_price'] = updated_price
+                
+            if request.GET.get('ram'):
+                ram = request.GET.get('ram')
+                rom = request.GET.get('rom')
+                print(ram,rom)
+                phoneobj = PhoneList.objects.get(slug=slug)
+                pobj = phoneobj.ram_rom.all()
+                price_add_ = 0
+                for x in pobj: 
+                    print(x.ram_size,x.rom_size)
+                    if str(x.ram_size) == str(ram) and str(x.rom_size)==str(rom):
+
+                        print('match')
+                        price_add_ = x.price_to_add
+                        break
+                phoneobj = PhoneList.objects.get(slug=slug)
+                colors = phoneobj.phone_images.order_by('color').values_list('color', flat=True).distinct()
+                context = {
+                'phoneobj':phoneobj,
+                'colors': colors
+                }
+               
+                if price==0:
+                    updated_price = phoneobj.get_price_by_storage(price_add_)  
+                else:
+                    updated_price = price+price_add_
+                
+                context['selected_color']=color
+                context['updated_price'] = updated_price
+                context['selected_ram'] = int(ram)
+                context['selected_rom'] = int(rom)
+
+
+            return render(request,'phones/mainphone.html',context)
+            
+                
         return render(request,'phones/mainphone.html',context)
     except Exception as e:
         print(e)

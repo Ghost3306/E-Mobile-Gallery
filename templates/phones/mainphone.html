@@ -19,6 +19,13 @@
                     
                     </div>
                     <br> 
+                    
+                    <div class="d-flex justify-content-evenly">
+                        {% for color in colors %}
+                            <input id="{{color}}"  type="radio" name="phone_color" onchange="oncolorchange('{{color}}')" {% if selected_color == color %} checked {% endif %}  value="{{color}}" id="">
+                            <label for="{{color}}">{{color}}</label>
+                        {% endfor %}
+                    </div>
                 </div>
 
            
@@ -26,9 +33,18 @@
         <div class="maindetail">
             <h1>{{phoneobj.phone_name}}</h1>
             <h5><strong>Sold By {{phoneobj.brand}}</strong></h5>
-            <h4>&#8377; {{phoneobj.original_price}}</h4>
-            <p>About : </p>
-            <p>Display : {{phoneobj.display.display_size}} {{phoneobj.display.display_name}} {{phoneobj.display.resolution_x}} x {{phoneobj.display.resolution_y}}<br>
+            <h4>
+                {% if updated_price %}
+                &#8377; {{updated_price}}
+                {% else %}
+                &#8377; {{phoneobj.original_price}}
+                {% endif %}
+          
+            </h4>
+            <!-- <h4>&#8377; {{phoneobj.original_price}}</h4> -->
+            <!-- <p>About : </p> -->
+            <p><strong>
+                About : </br>Display : </strong>{{phoneobj.display.display_size}} {{phoneobj.display.display_name}} {{phoneobj.display.resolution_x}} x {{phoneobj.display.resolution_y}}<br>
             
             {% if phoneobj.display.pixel_per_inch %}
                 {{phoneobj.display.pixel_per_inch}}
@@ -45,6 +61,32 @@
             {% if phoneobj.display.brightness %}
                 Brightness : {{phoneobj.display.brightness}}
             {% endif %}
+            </p>
+            <p><strong>CPU : </strong>{{phoneobj.cpu.cpu_name}}
+                {% if phoneobj.cpu.cpu_speed %}
+                    speed {{phoneobj.cpu.cpu_speed}} Ghz
+                {% endif %}
+            </p>
+            
+            <p><strong>Camera : </strong>
+                {% for camera in phoneobj.camera.all %}
+                    {{camera.camera_megapixel}} Mp {{camera.camera_name}},
+                {% endfor %}
+            </p>
+
+
+            <p><strong>Battery : </strong>{{phoneobj.battery.capacity}} Mah Charging speed : {{phoneobj.battery.charging_speed}} W
+            </p>
+            <div class="d-flex justify-content-around">
+                {% for storage in phoneobj.ram_rom.all %}
+                    <div class="storage">
+                        <input type="radio" name="{{storage.ram_size}}" {% if storage.ram_size == selected_ram and storage.rom_size == selected_rom %} checked {% endif %} onchange="onstoragechange('{{storage.ram_size}}','{{storage.rom_size}}')" id="{{storage.ram_size}}">
+                        <label for="{{storage.ram_size}}">{{storage.ram_size}} + {{storage.rom_size}}</label>
+                    </div>
+                {% endfor %}
+               
+            </div>
+            <p><strong>Quantity :  </strong>
             </p>
             
         </div>
@@ -76,6 +118,37 @@
           }
           slides[slideIndex-1].style.display = "block";  
           dots[slideIndex-1].className += " active";
+        }
+
+
+        function oncolorchange(color){
+            let currentUrl = new URL(window.location.href);
+
+            // Set the 'color' parameter in the URL
+            currentUrl.searchParams.set('color', color);
+            console.log(currentUrl);
+            // Change the browser URL without refreshing
+            window.location.replace(currentUrl.href)
+            // window.history.pushState({}, '', currentUrl);
+
+            console.log('Color changed to:', color);
+            
+            
+        }
+
+        function onstoragechange(ram,rom){
+            let currentUrl = new URL(window.location.href);
+
+            // Set the 'ram' and 'rom' parameters in the URL
+            currentUrl.searchParams.set('ram', ram);
+            currentUrl.searchParams.set('rom', rom);
+            console.log(currentUrl);
+            // Change the browser URL without refreshing
+            window.location.replace(currentUrl.href)
+            // window.history.pushState({}, '', currentUrl);
+
+            console.log('Storage changed to:', ram + ' RAM, ' + rom + ' ROM');
+            
         }
     </script>
 {% endblock %}
