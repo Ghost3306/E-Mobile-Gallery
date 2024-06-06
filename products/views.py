@@ -30,7 +30,8 @@ def get_product(request,slug):
                 'phoneobj':phoneobj,
                 'colors': colors
                 }
-                
+                colored_images = phoneobj.phone_images.filter(color=color)
+                context['updated_images'] = colored_images
                 updated_price = phoneobj.get_price_by_color(price_add)
                 price=updated_price
                 print(f'color {color},updated : {updated_price}')
@@ -44,11 +45,11 @@ def get_product(request,slug):
                 phoneobj = PhoneList.objects.get(slug=slug)
                 pobj = phoneobj.ram_rom.all()
                 price_add_ = 0
+
+               
                 for x in pobj: 
                     print(x.ram_size,x.rom_size)
                     if str(x.ram_size) == str(ram) and str(x.rom_size)==str(rom):
-
-                        print('match')
                         price_add_ = x.price_to_add
                         break
                 phoneobj = PhoneList.objects.get(slug=slug)
@@ -62,7 +63,10 @@ def get_product(request,slug):
                     updated_price = phoneobj.get_price_by_storage(price_add_)  
                 else:
                     updated_price = price+price_add_
-                
+                if request.GET.get('color'):
+                    print('color exist in storage')
+                    colored_images = phoneobj.phone_images.filter(color=color)
+                    context['updated_images'] = colored_images
                 context['selected_color']=color
                 context['updated_price'] = updated_price
                 context['selected_ram'] = int(ram)

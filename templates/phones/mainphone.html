@@ -6,13 +6,25 @@
             <div class="imagecar">
                 
                 <div class="slideshow-container">
-                    {% for image in phoneobj.phone_images.all %}
-                        <div class="mySlides">
-                            <div class="numbertext">1 / 3</div>
-                            <img src="/media/{{image.image}}" style="width:100%">
-                            <div class="text"></div>
-                        </div>
-                    {% endfor %}
+                    {% if updated_images %}
+                        {% for image in updated_images %}
+                            <div class="mySlides">
+                                <div class="numbertext">1 / 3</div>
+                                <img src="/media/{{image.image}}" style="width:100%">
+                                <div class="text"></div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for image in phoneobj.phone_images.all %}
+                            <div class="mySlides">
+                                <div class="numbertext">1 / 3</div>
+                                <img src="/media/{{image.image}}" style="width:100%">
+                                <div class="text"></div>
+                            </div>
+                        {% endfor %}
+
+                    {% endif %}
+                    
                     
                     <a class="prev" onclick="plusSlides(-1)">❮</a>
                     <a class="next" onclick="plusSlides(1)">❯</a>
@@ -86,7 +98,21 @@
                 {% endfor %}
                
             </div>
-            <p><strong>Quantity :  </strong>
+            <div class="qunt">
+                <div class="form-row">
+                    <div class="form-group col-md flex-grow-0">
+                        <label><strong>Quantity</strong></label>
+                        <div class="input-group mb-3 input-spinner">
+                          <div class="input-group-prepend">
+                            <button class="btn btn-light" type="button" id="button-plus" onclick="onplusclick()"> + </button>
+                          </div>
+                          <input type="text" id="quntity" class="form-control" value="1">
+                          <div class="input-group-append">
+                            <button class="btn btn-light" type="button" id="button-minus" onclick="onminusclick()"> − </button>
+                          </div>
+                        </div>
+                    </div>
+            </div>
             </p>
             
         </div>
@@ -149,6 +175,24 @@
 
             console.log('Storage changed to:', ram + ' RAM, ' + rom + ' ROM');
             
+        }
+
+        function onplusclick(){
+            var quantity = document.getElementById('quntity')
+            console.log(quantity.value);
+            if(quantity.value<10){
+                quantity.value = parseInt(quantity.value)+1
+            }
+        }
+
+        function onminusclick(){
+            var quantity = document.getElementById('quntity')
+            console.log(quantity.value);
+            if(parseInt(quantity.value)===1){
+                
+            }else{
+                quantity.value = parseInt(quantity.value)-1
+            }
         }
     </script>
 {% endblock %}
