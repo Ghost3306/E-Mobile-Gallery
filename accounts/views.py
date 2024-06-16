@@ -14,6 +14,7 @@ def home_index(request):
     return render(request,'home/homepage.html',{'phones':phones})
 
 def login_user(request):
+    redirect_to = request.GET.get('next', '')
     if request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password')
@@ -35,7 +36,8 @@ def login_user(request):
         user_obj= authenticate(username=email,password=password)
         if user_obj:
             login(request,user_obj)
-            return redirect('/')
+            print(redirect_to)
+            return HttpResponseRedirect(redirect_to)
 
 
         messages.warning(request, "Invalid credentials")
@@ -81,6 +83,6 @@ def login_page(request):
     return render(request,'accounts/login.html')
 
 def logout_user(request):
-    
+    redirect_to = request.GET.get('next', '')
     logout(request)
-    return redirect('/')
+    return HttpResponseRedirect(redirect_to)

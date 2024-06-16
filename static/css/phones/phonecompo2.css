@@ -15,16 +15,15 @@
     
 }
 .imagecar{
-    position: absolute;
-    top: 18%;
-    left: 15%;
-    transform: translate(-50% -50%);
+  position: relative;
+  top: 38%;
+  transform: translateY(-50%);
 }
 .maindetail{
     width: 50%;
     max-height: 80vh;
     border: 1px solid blue;
-    padding: 40px;
+    padding: 20px;
 }
 
 .imagedata{

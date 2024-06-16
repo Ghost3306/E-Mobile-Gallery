@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/accounts/sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/carousel.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/car.css' %}">
-    <link rel="stylesheet" href="{% static 'css/phones/phonecompo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/phones/phonecompo2.css' %}">
     <link rel="stylesheet" href="{% static 'css/phones/phonec2.css' %}">
     <link rel="stylesheet" href="{% static 'css/phones/phones3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/phones/phone4.css' %}">
     <script src={% static 'js/login.js' %}></script>
     <script src={% static 'js/register.js' %}></script>
     <script src={% static 'js/phones/carousel.js' %}></script>
@@ -44,7 +45,7 @@
            
           {% else %}
           <div class="d-flex justify-content-around">
-            <a class="nav-link mx-2" href="/login/">Login</a>
+            <a class="nav-link mx-2" href="/login/?next={{ request.path }}">Login</a>
             <a class="nav-link mx-2" href="/register-user/">Register</a>
           </div> 
 
@@ -56,7 +57,7 @@
           <a href="#">About</a>
           <a href="#">Services</a>
           <a href="#">Clients</a>
-          <a href="logout/">Logout</a>
+          <a href="/logout/?next={{ request.path }}">Logout</a>
         </div>
       </nav>
       <script>

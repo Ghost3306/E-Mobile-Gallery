@@ -101,18 +101,31 @@
             <div class="qunt">
                 <div class="form-row">
                     <div class="form-group col-md flex-grow-0">
-                        <label><strong>Quantity</strong></label>
+                        <label><strong>Quantity : </strong></label>
                         <div class="input-group mb-3 input-spinner">
                           <div class="input-group-prepend">
-                            <button class="btn btn-light" type="button" id="button-plus" onclick="onplusclick()"> + </button>
+                            <button class="btn btn-light" type="button" id="button-minus" onclick="onminusclick()"> − </button>
+                            
                           </div>
                           <input type="text" id="quntity" class="form-control" value="1">
                           <div class="input-group-append">
-                            <button class="btn btn-light" type="button" id="button-minus" onclick="onminusclick()"> − </button>
+                            <button class="btn btn-light" type="button" id="button-plus" onclick="onplusclick()"> + </button>
                           </div>
                         </div>
                     </div>
             </div>
+            {% if user.is_authenticated %}
+                <div class="d-flex justify-content-evenly cart">
+                    <input type="button" value="Add to Cart" class="btn btn-outline-primary">
+                    <input type="button" value="Buy" class="btn btn-success">
+                </div>
+            {% else %}
+                <div class="d-flex justify-content-evenly cart">
+                    <!-- <input type="button" value="Add to Cart" class="btn btn-outline-primary">
+                    <input type="button" value="Buy" class="btn btn-success"> -->
+                    <h5>You need to login to add or buy this item</h5>
+                </div>
+            {% endif %}
             </p>
             
         </div>
