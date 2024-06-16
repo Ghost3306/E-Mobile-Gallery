@@ -116,9 +116,13 @@
             </div>
             {% if user.is_authenticated %}
                 <div class="d-flex justify-content-evenly cart">
-                    <input type="button" value="Add to Cart" class="btn btn-outline-primary">
+                    <input type="button" value="Add to Cart" onclick="addtocart('{{phoneobj.slug}}')" class="btn btn-outline-primary">
                     <input type="button" value="Buy" class="btn btn-success">
+                    
                 </div>
+                {% if msg %}
+                <h6>{{msg}}</h6>
+                {% endif %}
             {% else %}
                 <div class="d-flex justify-content-evenly cart">
                     <!-- <input type="button" value="Add to Cart" class="btn btn-outline-primary">
@@ -162,32 +166,29 @@
 
         function oncolorchange(color){
             let currentUrl = new URL(window.location.href);
-
-            // Set the 'color' parameter in the URL
             currentUrl.searchParams.set('color', color);
             console.log(currentUrl);
-            // Change the browser URL without refreshing
             window.location.replace(currentUrl.href)
-            // window.history.pushState({}, '', currentUrl);
-
             console.log('Color changed to:', color);
-            
-            
         }
 
         function onstoragechange(ram,rom){
             let currentUrl = new URL(window.location.href);
-
-            // Set the 'ram' and 'rom' parameters in the URL
             currentUrl.searchParams.set('ram', ram);
             currentUrl.searchParams.set('rom', rom);
             console.log(currentUrl);
-            // Change the browser URL without refreshing
             window.location.replace(currentUrl.href)
-            // window.history.pushState({}, '', currentUrl);
-
             console.log('Storage changed to:', ram + ' RAM, ' + rom + ' ROM');
-            
+        }
+
+        function addtocart(slug){
+            var quantity = document.getElementById('quntity')
+            let currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('quntity', quantity.value);
+            console.log('slug'+slug)
+            console.log(currentUrl);
+            console.log('full url : '+'/add/'+slug+currentUrl.search)
+            window.location.replace(currentUrl.href)
         }
 
         function onplusclick(){
