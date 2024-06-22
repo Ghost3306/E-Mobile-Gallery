@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from products.models import PhoneList
-
+from django.contrib import messages
 # Create your views here.
 def get_product(request,slug):
     
@@ -67,7 +67,7 @@ def get_product(request,slug):
                     print('color exist in storage')
                     colored_images = phoneobj.phone_images.filter(color=color)
                     context['updated_images'] = colored_images
-                context['selected_color']=color
+                    context['selected_color']=color
                 context['updated_price'] = updated_price
                 context['selected_ram'] = int(ram)
                 context['selected_rom'] = int(rom)
@@ -80,3 +80,21 @@ def get_product(request,slug):
     except Exception as e:
         print(e)
         return render(request,'phones/mainphone.html')
+    
+def addtocart(request,slug):
+    color = request.GET.get('color')
+    ram = request.GET.get('ram')
+    rom = request.GET.get('rom')
+    quntity = request.GET.get('quntity')
+    ret = '/phone/'+slug
+    if not color:
+        messages.error(request, 'Please select phone specifications!')
+        return redirect(ret)
+    
+    if not ram and not rom:
+        messages.error(request, 'Please select phone specifications!')
+        return redirect(ret)
+
+
+
+    return redirect(ret)

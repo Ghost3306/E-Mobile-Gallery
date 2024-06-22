@@ -1,7 +1,7 @@
 from django.db import models
 from base.models import BaseModel
 from django.utils.text import slugify
-
+from django.contrib.auth.models import User
 
 
 class Category(BaseModel):
@@ -141,3 +141,5 @@ class PhoneImages(BaseModel):
     color = models.CharField(max_length=30)
     price_to_add = models.IntegerField(default=0)
     image = models.ImageField(upload_to='images')
+
+

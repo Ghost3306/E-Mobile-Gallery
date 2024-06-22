@@ -120,8 +120,13 @@
                     <input type="button" value="Buy" class="btn btn-success">
                     
                 </div>
-                {% if msg %}
-                <h6>{{msg}}</h6>
+                {% if messages %}
+                {% for message in messages %}
+                    <div class={{ message.tags }}>
+                        <h6>{{ message }}
+                        </h6>
+                        </div>
+                {% endfor %}
                 {% endif %}
             {% else %}
                 <div class="d-flex justify-content-evenly cart">
@@ -188,7 +193,8 @@
             console.log('slug'+slug)
             console.log(currentUrl);
             console.log('full url : '+'/add/'+slug+currentUrl.search)
-            window.location.replace(currentUrl.href)
+            window.location.href = window.location.origin+ '/phone/add/'+slug+currentUrl.search
+            //window.location.replace(currentUrl.href)
         }
 
         function onplusclick(){
