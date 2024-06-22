@@ -117,7 +117,7 @@
             {% if user.is_authenticated %}
                 <div class="d-flex justify-content-evenly cart">
                     <input type="button" value="Add to Cart" onclick="addtocart('{{phoneobj.slug}}')" class="btn btn-outline-primary">
-                    <input type="button" value="Buy" class="btn btn-success">
+                    <input type="button" value="Buy" onclick="buynow('{{phoneobj.slug}}')" class="btn btn-success">
                     
                 </div>
                 {% if messages %}
@@ -190,11 +190,16 @@
             var quantity = document.getElementById('quntity')
             let currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set('quntity', quantity.value);
-            console.log('slug'+slug)
-            console.log(currentUrl);
-            console.log('full url : '+'/add/'+slug+currentUrl.search)
             window.location.href = window.location.origin+ '/phone/add/'+slug+currentUrl.search
             //window.location.replace(currentUrl.href)
+        }
+
+        function buynow(slug){
+            var quantity = document.getElementById('quntity')
+            let currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('quntity', quantity.value);
+            console.log('slug'+slug)        
+            window.location.href = window.location.origin+ '/phone/buy/'+slug+currentUrl.search
         }
 
         function onplusclick(){

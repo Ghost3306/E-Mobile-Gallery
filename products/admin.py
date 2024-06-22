@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from products.models import Category,CameraDetails,CellularNetwork,OSDetails,RamRom,Brand,Display,Connectivity,CameraFeatures,CPUSpecs,BatteryDetails,InTheBox,PhoneImages,PhoneList
+from products.models import Category,CameraDetails,CellularNetwork,OSDetails,RamRom,Brand,Display,Connectivity,CameraFeatures,CPUSpecs,BatteryDetails,InTheBox,PhoneImages,PhoneList,Cart
 
 
 class PhoneImagesAdmin(admin.StackedInline):
@@ -67,5 +67,8 @@ class IntheboxAdmin(admin.ModelAdmin):
     model=InTheBox
 
 
+@admin.register(Cart)
+class IntheboxAdmin(admin.ModelAdmin):
+    model=Cart
     
 admin.site.register(PhoneList,PhoneAdmin)

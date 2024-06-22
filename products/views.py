@@ -1,7 +1,9 @@
 from django.shortcuts import redirect, render
 from products.models import PhoneList
 from django.contrib import messages
-# Create your views here.
+from products.models import Cart
+
+
 def get_product(request,slug):
     
     try:    
@@ -86,6 +88,7 @@ def addtocart(request,slug):
     ram = request.GET.get('ram')
     rom = request.GET.get('rom')
     quntity = request.GET.get('quntity')
+    phone = PhoneList.objects.get(slug=slug)
     ret = '/phone/'+slug
     if not color:
         messages.error(request, 'Please select phone specifications!')
@@ -95,6 +98,45 @@ def addtocart(request,slug):
         messages.error(request, 'Please select phone specifications!')
         return redirect(ret)
 
+    colors = phone.phone_images.filter(color=color)
+    storage = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom))
+    if len(colors)==0 or len(storage)==0:
+        messages.success(request, 'Invalid Order')
+        return redirect(ret)
 
-
+    user = request.user
+    cart = Cart(user=user,phone=phone,color=color,ram=int(ram),rom=int(rom),quantity=int(quntity),status='order placed')
+    cart.save()
+    messages.success(request, 'Order Placed Successfull')
     return redirect(ret)
+
+
+def buynow(request,slug):
+    color = request.GET.get('color')
+    ram = request.GET.get('ram')
+    rom = request.GET.get('rom')
+    quntity = request.GET.get('quntity')
+    phone = PhoneList.objects.get(slug=slug)
+    ret = '/phone/'+slug+f"?ram={ram}&rom={rom}&color={color}"
+    if not color:
+        messages.error(request, 'Please select phone specifications!')
+        return redirect(ret)
+    
+    if not ram and not rom:
+        messages.error(request, 'Please select phone specifications!')
+        return redirect(ret)
+    
+    phone = PhoneList.objects.get(slug=slug)
+    colors = phone.phone_images.filter(color=color)
+    storage = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom))
+    if len(colors)==0 or len(storage)==0:
+        messages.success(request, 'Invalid Order')
+        return redirect(ret)
+    context = {
+        'phone':phone,
+        'color':color,
+        'ram':ram,
+        'rom':rom,
+        'quntity':quntity
+    }
+    return render(request,'phones/buynow.html',context)

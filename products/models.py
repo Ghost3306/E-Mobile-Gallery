@@ -143,3 +143,15 @@ class PhoneImages(BaseModel):
     image = models.ImageField(upload_to='images')
 
 
+class Cart(BaseModel):
+    user = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='username_id')
+    phone = models.ForeignKey(PhoneList,on_delete=models.DO_NOTHING,related_name='phonename_id')
+    color = models.CharField(max_length=50)
+    ram = models.IntegerField()
+    rom = models.IntegerField()
+    quantity = models.IntegerField()
+    status = models.CharField(max_length=20)
+
+    def __str__(self) ->str:
+        ret = str(self.user.email)+'->'+str(self.phone.phone_name)
+        return ret
