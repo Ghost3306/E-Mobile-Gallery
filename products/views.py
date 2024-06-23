@@ -132,8 +132,10 @@ def buynow(request,slug):
     if len(colors)==0 or len(storage)==0:
         messages.success(request, 'Invalid Order')
         return redirect(ret)
+    colors = phone.phone_images.filter(color=color).first()
     context = {
         'phone':phone,
+        'phone_images':colors,
         'color':color,
         'ram':ram,
         'rom':rom,
