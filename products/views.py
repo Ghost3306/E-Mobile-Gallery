@@ -133,12 +133,33 @@ def buynow(request,slug):
         messages.success(request, 'Invalid Order')
         return redirect(ret)
     colors = phone.phone_images.filter(color=color).first()
+    stor_pri = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom)).first()
+    t_price = phone.original_price+colors.price_to_add+stor_pri.price_to_add
+    total_price = t_price*int(quntity)
+    print(total_price)
+
+
     context = {
         'phone':phone,
         'phone_images':colors,
         'color':color,
         'ram':ram,
         'rom':rom,
-        'quntity':quntity
+        'quntity':quntity,
+        'total_price':total_price,
+        'actual_price':t_price
     }
+
+    if request.method == 'post':
+        name = request.POST.get('full_name')
+        phone = request.POST.get('mobile')
+        street = request.POST.get('street')
+        locality = request.POST.get('locality')
+        village_city = request.POST.get('village_city')
+        taluka = request.POST.get('taluka')
+        district = request.POST.get('district')
+        state = request.POST.get('state')
+        pincode = request.POST.get('pincode')
+        print('after inset',total_price)
+
     return render(request,'phones/buynow.html',context)
