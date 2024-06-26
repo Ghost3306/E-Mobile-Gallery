@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from products.models import Category,CameraDetails,CellularNetwork,OSDetails,RamRom,Brand,Display,Connectivity,CameraFeatures,CPUSpecs,BatteryDetails,InTheBox,PhoneImages,PhoneList,Cart
-
+from products.models import PlacedOrders,Address
 
 class PhoneImagesAdmin(admin.StackedInline):
     model = PhoneImages
@@ -68,7 +68,15 @@ class IntheboxAdmin(admin.ModelAdmin):
 
 
 @admin.register(Cart)
-class IntheboxAdmin(admin.ModelAdmin):
+class InCartAdmin(admin.ModelAdmin):
     model=Cart
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    model=Address
+
+@admin.register(PlacedOrders)
+class PlaceOrderAdmin(admin.ModelAdmin):
+    model=PlacedOrders
     
 admin.site.register(PhoneList,PhoneAdmin)

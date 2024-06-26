@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from products.models import PhoneList
 from django.contrib import messages
-from products.models import Cart
+from products.models import Cart,Address,PlacedOrders
 
 
 def get_product(request,slug):
@@ -43,14 +43,14 @@ def get_product(request,slug):
             if request.GET.get('ram'):
                 ram = request.GET.get('ram')
                 rom = request.GET.get('rom')
-                print(ram,rom)
+              
                 phoneobj = PhoneList.objects.get(slug=slug)
                 pobj = phoneobj.ram_rom.all()
                 price_add_ = 0
 
                
                 for x in pobj: 
-                    print(x.ram_size,x.rom_size)
+                    
                     if str(x.ram_size) == str(ram) and str(x.rom_size)==str(rom):
                         price_add_ = x.price_to_add
                         break
@@ -66,7 +66,7 @@ def get_product(request,slug):
                 else:
                     updated_price = price+price_add_
                 if request.GET.get('color'):
-                    print('color exist in storage')
+                    
                     colored_images = phoneobj.phone_images.filter(color=color)
                     context['updated_images'] = colored_images
                     context['selected_color']=color
@@ -105,7 +105,7 @@ def addtocart(request,slug):
         return redirect(ret)
 
     user = request.user
-    cart = Cart(user=user,phone=phone,color=color,ram=int(ram),rom=int(rom),quantity=int(quntity),status='order placed')
+    cart = Cart(user=user,phone=phone,color=color,ram=int(ram),rom=int(rom),quantity=int(quntity),status='incart')
     cart.save()
     messages.success(request, 'Order Placed Successfull')
     return redirect(ret)
@@ -136,7 +136,7 @@ def buynow(request,slug):
     stor_pri = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom)).first()
     t_price = phone.original_price+colors.price_to_add+stor_pri.price_to_add
     total_price = t_price*int(quntity)
-    print(total_price)
+    
 
 
     context = {
@@ -150,9 +150,9 @@ def buynow(request,slug):
         'actual_price':t_price
     }
 
-    if request.method == 'post':
+    if request.method == 'POST':
         name = request.POST.get('full_name')
-        phone = request.POST.get('mobile')
+        phone_number = request.POST.get('mobile')
         street = request.POST.get('street')
         locality = request.POST.get('locality')
         village_city = request.POST.get('village_city')
@@ -160,6 +160,17 @@ def buynow(request,slug):
         district = request.POST.get('district')
         state = request.POST.get('state')
         pincode = request.POST.get('pincode')
+        print(name)
+        user = request.user
         print('after inset',total_price)
+        print(user.username)
+        if 'cod' in request.POST:
+            cart = Cart.objects.create(user=user,phone=phone,color=color,ram=int(ram),rom=int(rom),quantity=int(quntity),status='buynow')
+            address = Address.objects.create(name=name,phone=phone_number,street=street,locality=locality,village_city=village_city,taluka=taluka,district=district,state=state,pincode=pincode)
+            place_order = PlacedOrders(user=user,address=address,cart=cart)
+            place_order.save()
+            print('cash on delivery saved')
+            return redirect('/')
+      
 
     return render(request,'phones/buynow.html',context)

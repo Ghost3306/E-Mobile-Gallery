@@ -155,3 +155,21 @@ class Cart(BaseModel):
     def __str__(self) ->str:
         ret = str(self.user.email)+'->'+str(self.phone.phone_name)
         return ret
+    
+
+class Address(BaseModel):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    locality = models.CharField(max_length=100)
+    village_city = models.CharField(max_length=100)
+    taluka = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)    
+    pincode = models.CharField(max_length=100)
+
+
+class PlacedOrders(BaseModel):
+    user = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='place_username_id')
+    address = models.ForeignKey(Address,on_delete=models.CASCADE,related_name='address')
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart')
