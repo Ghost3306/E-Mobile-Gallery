@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+{% block start %}
+{% load custom_filters %}
+<div class="container d-flex justify-content-evenly cart-main-body">
+    <div class="d-flex flex-column mb-3 cart-body">
+        {% for cart in carts %}
+        <div class="accordion-body">
+            <div class="d-flex">
+              <div class=" p-2">
+                  <img src="/media/{{cart.phone_image.image}}" class="images">  
+              </div>
+              <div class="p-2 mx-3 my-3">
+                <div class="d-flex justify-content-around">
+                  <h5>{{cart.cart.phone.brand}} {{cart.cart.phone.phone_name}} ({{cart.cart.color}}, {{cart.cart.ram}}GB, {{cart.cart.rom}}GB)</h5>
+                </div>
+                <div class="row my-2">
+                  <div class="col">
+                    <h6>Quantity : {{cart.cart.quantity}}</h6>
+                  </div>
+                </div>
+                
+
+                <div class="row my-2">
+                    <div class="col">
+                        <h6>Order Subtotal ({{ cart.cart.phone.original_price }} x {{ cart.cart.quantity }}) : {{ cart.cart.phone.original_price|mul:cart.cart.quantity }}</h6>
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col">
+                        <a href="" class="btn btn-outline-danger btn-sm anchorbtn">Delete</a>
+                    </div>
+                    <div class="col">
+                        <a href="" class="anchorbtn">Save Later</a>
+                    </div>
+                </div>
+              </div>
+          
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex flex-column mb-3 cart-body-side">
+        <h4>Order Subtotal : </h4>
+        <h5>Total items : {{num_items}}</h5>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

@@ -2,6 +2,15 @@ from django.shortcuts import redirect, render
 from products.models import PhoneList
 from django.contrib import messages
 from products.models import Cart,Address,PlacedOrders
+from django import template
+register = template.Library()
+
+@register.filter(name='mul')
+def mul(value, arg):
+    try:
+        return value * arg
+    except (ValueError, TypeError):
+        return None
 
 
 def get_product(request,slug):
@@ -174,3 +183,33 @@ def buynow(request,slug):
       
 
     return render(request,'phones/buynow.html',context)
+
+def yourorders(request):
+    user = request.user
+    
+    return render(request,'sidebar/yourorders.html')
+
+def yourcart(request):
+    user = request.user
+    cart = Cart.objects.filter(user=user)
+
+    carts = []
+    for c in cart:
+        images = c.phone.phone_images.filter(color=c.color).first()
+        carts.append({
+            'cart':c,
+            'phone_image':images
+        })
+        
+    context = {
+        'carts':carts,
+        'num_items':len(cart)
+    }
+
+    return render(request,'sidebar/yourcart.html',context)
+
+
+def yoursavelater(request):
+    user = request.user
+    
+    return render(request,'sidebar/yoursavelater.html')

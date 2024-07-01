@@ -7,7 +7,10 @@ urlpatterns = [
 #   path('<slug>/',)
     path('<slug>',views.get_product,name='get_product'),
     path('add/<slug>',views.addtocart,name='addtocart'),
-    path('buy/<slug>',views.buynow,name='buynow')
+    path('buy/<slug>',views.buynow,name='buynow'),
+    path('yourorders/',views.yourorders,name='yourorders'),
+    path('cart/',views.yourcart,name='yourcart'),
+    path('savelater/',views.yoursavelater,name='yoursavelater'),
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
