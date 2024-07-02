@@ -176,7 +176,7 @@ def buynow(request,slug):
 
     return render(request,'phones/buynow.html',context)
 
-@csrf_exempt
+
 def buyfromcart(request):
     user = request.user
     cart = Cart.objects.filter(user=user,status="incart")
