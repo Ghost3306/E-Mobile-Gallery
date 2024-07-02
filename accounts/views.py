@@ -83,6 +83,7 @@ def login_page(request):
     return render(request,'accounts/login.html')
 
 def logout_user(request):
+    
     redirect_to = request.GET.get('next', '')
     logout(request)
     return HttpResponseRedirect(redirect_to)

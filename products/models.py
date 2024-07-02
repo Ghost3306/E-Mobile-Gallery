@@ -168,8 +168,11 @@ class Address(BaseModel):
     state = models.CharField(max_length=100)    
     pincode = models.CharField(max_length=100)
 
+    def __str__(self) ->str:
+        return self.name
+
 
 class PlacedOrders(BaseModel):
     user = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='place_username_id')
-    address = models.ForeignKey(Address,on_delete=models.CASCADE,related_name='address')
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart')
+    address = models.ForeignKey(Address,on_delete=models.DO_NOTHING,related_name='address')
+    cart = models.ForeignKey(Cart,on_delete=models.DO_NOTHING,related_name='cart')

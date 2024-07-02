@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Now {{phone.phone_name}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    {% load static %}   
+    <link rel="stylesheet" href="{% static 'css/accounts/buynow1.css' %}">
+    
+    <script src={% static 'js/buynow.js' %}></script>
+</head>
+<body>
+    {% load custom_filters %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ <div class="container my-3">
+  <h3>Place Your Order</h3>
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" fdprocessedid="esm6ko">
+          <h6>Phone Details</h6>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+         {% for cart in carts %}
+         <div class="d-flex">
+            <div class=" p-2">
+                <img src="/media/{{cart.phone_image.image}}" class="images">  
+            </div>
+            <div class="p-2 mx-3 my-3">
+              <div class="d-flex justify-content-around">
+                <h5>{{cart.cart.phone.brand}} {{cart.cart.phone.phone_name}} ({{cart.cart.color}}, {{cart.cart.ram}}GB, {{cart.cart.rom}}GB)</h5>
+              </div>
+              <div class="row my-2">
+                <div class="col">
+                  <h6>Quantity : {{cart.cart.quantity}}</h6>
+                </div>
+              </div>
+              <div class="row my-2">
+                <div class="col">
+                  <h6>Order Subtotal ({{ cart.cart.phone.original_price }} x {{ cart.cart.quantity }}) : {{ cart.cart.phone.original_price|mul:cart.cart.quantity }}</h6>
+                </div>
+              </div>
+            </div>
+        
+          </div>
+
+         {% endfor %}
+         <h5>Total items : {{num_items}}</h5>
+         <h5>Total amount : {{total_price}}</h5>
+        </div>
+      </div>
+    </div>
+    <form id="addressForm" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="csrfmiddlewaretoken" value="atpFOfdcHGuabxn8HIptnt87qAEYOnmbe79f9eVrjeBxHXRxxW0tmoEOCNkBgcd8">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo" fdprocessedid="7055mq">
+          <h6>Address</h6>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" style="">
+        
+        <div class="accordion-body">
+          <div class="container">
+            <div class="d-flex justify-content-around">
+              <input class="form-control" type="text" name="full_name" placeholder="Full Name" aria-label="default input example" required="">
+          </div>
+          <div class="row my-3">
+            <div class="col">
+              <input type="text" class="form-control" name="street" placeholder="Street" aria-label="Street" required="">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="locality" placeholder="Locality" aria-label="Locality" required="">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="village_city" placeholder="Village/City" aria-label="Village/City" required="">
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col">
+              <input type="text" class="form-control" name="taluka" placeholder="Taluka" aria-label="Taluka" required="">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="district" placeholder="District" aria-label="District" required="">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="state" placeholder="State" aria-label="State" required="">
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col">
+              <input type="text" class="form-control" id="mobile" name="mobile" required="" oninput="validatePhone(this)" placeholder="Mobile" aria-label="Mobile">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" id="pincode" name="pincode" required="" oninput="validatePincode(this)" placeholder="Pincode" aria-label="Pincode">
+            </div>
+          </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree" fdprocessedid="9nos1">
+          <h6>Order Confirmation</h6>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <div class="d-flex justify-content-center">
+              <button type="submit" name="cod" class="btn btn-primary">Cash on delivery</button>
+              <button type="submit" class="btn btn-outline-success mx-2">Online</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+ </div>
+  
+</body>
+</html>

@@ -2,15 +2,7 @@ from django.shortcuts import redirect, render
 from products.models import PhoneList
 from django.contrib import messages
 from products.models import Cart,Address,PlacedOrders
-from django import template
-register = template.Library()
-
-@register.filter(name='mul')
-def mul(value, arg):
-    try:
-        return value * arg
-    except (ValueError, TypeError):
-        return None
+from django.views.decorators.csrf import csrf_exempt
 
 
 def get_product(request,slug):
@@ -129,18 +121,18 @@ def buynow(request,slug):
     ret = '/phone/'+slug+f"?ram={ram}&rom={rom}&color={color}"
     if not color:
         messages.error(request, 'Please select phone specifications!')
-        return redirect(ret)
+        return redirect('/phone/'+slug)
     
     if not ram and not rom:
         messages.error(request, 'Please select phone specifications!')
-        return redirect(ret)
+        return redirect('/phone/'+slug)
     
     phone = PhoneList.objects.get(slug=slug)
     colors = phone.phone_images.filter(color=color)
     storage = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom))
     if len(colors)==0 or len(storage)==0:
         messages.success(request, 'Invalid Order')
-        return redirect(ret)
+        return redirect('/phone/'+slug)
     colors = phone.phone_images.filter(color=color).first()
     stor_pri = phone.ram_rom.filter(ram_size=int(ram),rom_size=int(rom)).first()
     t_price = phone.original_price+colors.price_to_add+stor_pri.price_to_add
@@ -169,10 +161,10 @@ def buynow(request,slug):
         district = request.POST.get('district')
         state = request.POST.get('state')
         pincode = request.POST.get('pincode')
-        print(name)
+        # print(name)
         user = request.user
-        print('after inset',total_price)
-        print(user.username)
+        # print('after inset',total_price)
+        # print(user.username)
         if 'cod' in request.POST:
             cart = Cart.objects.create(user=user,phone=phone,color=color,ram=int(ram),rom=int(rom),quantity=int(quntity),status='buynow')
             address = Address.objects.create(name=name,phone=phone_number,street=street,locality=locality,village_city=village_city,taluka=taluka,district=district,state=state,pincode=pincode)
@@ -184,6 +176,56 @@ def buynow(request,slug):
 
     return render(request,'phones/buynow.html',context)
 
+@csrf_exempt
+def buyfromcart(request):
+    user = request.user
+    cart = Cart.objects.filter(user=user,status="incart")
+    carts = []
+    total_price = 0
+    for c in cart:
+        images = c.phone.phone_images.filter(color=c.color).first()
+        carts.append({
+            'cart':c,
+        'phone_image':images
+            })
+        storage = c.phone.ram_rom.get(ram_size=c.ram,rom_size=c.rom)
+        t=c.phone.original_price+images.price_to_add+storage.price_to_add
+        total_price+=t*c.quantity
+    if request.method == 'POST':
+        name = request.POST.get('full_name')
+        phone_number = request.POST.get('mobile')
+        street = request.POST.get('street')
+        locality = request.POST.get('locality')
+        village_city = request.POST.get('village_city')
+        taluka = request.POST.get('taluka')
+        district = request.POST.get('district')
+        state = request.POST.get('state')
+        pincode = request.POST.get('pincode')
+        user = request.user
+        if 'cod' in request.POST:
+            cart = Cart.objects.filter(user=user,status="incart")
+            address = Address.objects.create(name=name,phone=phone_number,street=street,locality=locality,village_city=village_city,taluka=taluka,district=district,state=state,pincode=pincode)
+            for c in cart:
+                place_order = PlacedOrders(user=user,address=address,cart=c)
+                place_order.save()
+                cd = Cart.objects.get(uid=c.uid)
+                cd.status='buy'
+                cd.save()
+                print('order saved')
+                
+            
+            print('cash on delivery saved')
+            return redirect('/')
+        
+    context = {
+        'carts':carts,
+        'num_items':len(cart),
+        'total_price':total_price
+    }
+
+    return render(request,'phones/buyfromcart.html',context)
+
+
 def yourorders(request):
     user = request.user
     
@@ -191,22 +233,47 @@ def yourorders(request):
 
 def yourcart(request):
     user = request.user
-    cart = Cart.objects.filter(user=user)
+    try:
+        cart = Cart.objects.filter(user=user,status="incart")
+    
+        carts = []
+        total_price = 0
+        for c in cart:
+            images = c.phone.phone_images.filter(color=c.color).first()
+            carts.append({
+                'cart':c,
+                'phone_image':images
+            })
+            storage = c.phone.ram_rom.get(ram_size=c.ram,rom_size=c.rom)
+            t=c.phone.original_price+images.price_to_add+storage.price_to_add
+            total_price+=t*c.quantity
+        print("total amount: ",total_price)
 
-    carts = []
-    for c in cart:
-        images = c.phone.phone_images.filter(color=c.color).first()
-        carts.append({
-            'cart':c,
-            'phone_image':images
-        })
+            
         
-    context = {
-        'carts':carts,
-        'num_items':len(cart)
-    }
+        context = {
+            'carts':carts,
+            'num_items':len(cart),
+            'total_price':total_price
+        }
+        return render(request,'sidebar/yourcart.html',context)
+    except Exception as e:
+        print(e)
+        return redirect('/')
+    
+    
+    
+def deletecart(request,uid):
+    cart = Cart.objects.get(uid=uid)
+    cart.delete()
+    return redirect('/phone/cart/')
 
-    return render(request,'sidebar/yourcart.html',context)
+def savelater(request,uid):
+    cart = Cart.objects.get(uid=uid)
+    cart.status='savelater'
+    cart.save()
+    return redirect('/phone/cart/')
+
 
 
 def yoursavelater(request):

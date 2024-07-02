@@ -28,10 +28,10 @@
 
                 <div class="row my-2">
                     <div class="col">
-                        <a href="" class="btn btn-outline-danger btn-sm anchorbtn">Delete</a>
+                        <a href="delete/{{cart.cart.uid}}" class="btn btn-outline-danger btn-sm anchorbtn">Delete</a>
                     </div>
                     <div class="col">
-                        <a href="" class="anchorbtn">Save Later</a>
+                        <a href="savelater/{{cart.cart.uid}}" class="anchorbtn">Save Later</a>
                     </div>
                 </div>
               </div>
@@ -43,6 +43,12 @@
     <div class="d-flex flex-column mb-3 cart-body-side">
         <h4>Order Subtotal : </h4>
         <h5>Total items : {{num_items}}</h5>
+        <h5>Total amount : &#8377;{{total_price}}</h5>
+        <div class="div">
+          <a href="placeorder/" class="btn btn-primary btn-lg my-2">Place Your Order</a>
+        </div>
+        
+
     </div>
 
 </div>
