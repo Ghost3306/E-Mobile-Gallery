@@ -2,5 +2,22 @@
 {% block start %}
 
 
+    {% for c  in carts  %}
+    <div class="d-flex">
+        <div class=" p-2">
+            <img src="/media/{{c.image.image}}" class="images">  
+        </div>
+        <div class="p-2 mx-3 my-3">
+          <div class="d-flex justify-content-around">
+            <h5>{{c.cart.phone.brand}} {{c.cart.phone.phone_name}} ({{c.cart.color}}, {{c.cart.ram}}GB, {{c.cart.rom}}GB)</h5>
+          </div>
+          <div class="row my-2">
+            
+          </div> 
+        </div>
+      </div>
+
+    {% endfor %}
+
 
 {% endblock %}

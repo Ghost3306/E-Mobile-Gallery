@@ -228,7 +228,24 @@ def buyfromcart(request):
 
 def yourorders(request):
     user = request.user
-    
+    try:
+        orders = PlacedOrders.objects.filter(user=user)
+        ret= []
+        for order in orders:
+            images = order.cart.phone.phone_images.filter(color=order.cart.color).first()
+           
+            ret.append({
+                'order_main':order,
+                'order_image':images
+            })
+
+        context={
+            'orders':ret
+        }
+        return render(request,'sidebar/yourorders.html',context)
+    except Exception as e:
+        print(e)
+
     return render(request,'sidebar/yourorders.html')
 
 def yourcart(request):
@@ -278,5 +295,21 @@ def savelater(request,uid):
 
 def yoursavelater(request):
     user = request.user
-    
-    return render(request,'sidebar/yoursavelater.html')
+    carts = Cart.objects.filter(user=user,status="savelater")
+    cart_items = []
+    for cart in carts:
+        image = cart.phone.phone_images.filter(color=cart.color).first()
+        cart_items.append({
+            'cart':cart,
+            'image':image
+        })
+
+    context={
+        'carts':cart_items
+    }
+    return render(request,'sidebar/yoursavelater.html',context)
+
+def removesavelater(request,uid):
+    print(uid)
+
+    return redirect('savelater/')

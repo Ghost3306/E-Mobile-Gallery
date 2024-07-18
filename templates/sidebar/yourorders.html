@@ -1,6 +1,46 @@
 {% extends "base/base.html" %}
 {% block start %}
+<div class="d-flex flex-column mb-3 container">
+    {% load custom_filters %}
+    {% for order in orders%}
+    <div class="d-flex">
+        <div class=" p-2">
+            <img src="/media/{{order.order_image.image}}" class="images">  
+        </div>
+        <div class="p-2 mx-3 my-3">
+          <div class="d-flex justify-content-around">
+            <h5>{{order.order_main.cart.phone.brand}} {{order.order_main.cart.phone.phone_name}} ({{order.order_main.cart.color}}, {{order.order_main.cart.ram}}GB, {{order.order_main.cart.rom}}GB)</h5>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              <h6>Quantity : {{order.order_main.cart.quantity}}</h6>
+            </div>
+          </div>
+          <div class="row my-2">
+              <div class="col">
+                  <h6>Order Subtotal ({{order.order_main.cart.phone.original_price}} x {{order.order_main.cart.quantity}}) : {{ order.order_main.cart.phone.original_price|mul:order.order_main.cart.quantity }}</h6>
+              </div>
+          </div> 
+          {% if order.order_main.cart.status == 'delivered' %}
+            <div class="row my-2">
+                <div class="col">
+                    <p class="btn btn-outline-success btn-sm anchorbtn">Order delivered</p>
+                </div>
+            </div> 
+          {% else %}
+            <div class="row my-2">
+                <div class="col">
+                    <a href="cancelorder/{{order.order_main.uid}}" class="btn btn-outline-danger btn-sm anchorbtn">Cancel Order</a>
+                </div>
+            </div> 
 
+          {% endif %}
+          
+        </div>
+      </div>
+      <hr>
+    {% endfor %}
+  </div>
 
 
 {% endblock %}
